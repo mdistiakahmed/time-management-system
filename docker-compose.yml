@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  backend:
+    build: ./backend
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - $SPRING_BOOT_PORT:8080
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: "postgres:11.4"
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - $POSGRESQL_PORT:5432
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+  frontend:
+    build: ./frontend
+    restart: on-failure
+    env_file: ./.env
+    ports:
+      - $REACT_PORT:3000
